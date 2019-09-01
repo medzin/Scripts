@@ -87,6 +87,12 @@ fi
 $SUDO sed -i '/JAVA_HOME="\/usr\/lib\/jvm\/java-8-oracle"/c\JAVA_HOME="\/usr\/lib\/jvm\/java-8-openjdk-amd64"'  $AMS_BASE/antmedia
 check $?
 
+$SUDO sh $AMS_BASE/create_app.sh LiveApp $AMS_BASE
+check $?
+
+$SUDO sh $AMS_BASE/create_app.sh WebRTCApp $AMS_BASE
+check $?
+
 $SUDO cp $AMS_BASE/antmedia /etc/init.d/
 check $?
 
