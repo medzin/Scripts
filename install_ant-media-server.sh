@@ -90,8 +90,13 @@ check $?
 $SUDO sh $AMS_BASE/create_app.sh LiveApp $AMS_BASE
 check $?
 
-$SUDO sh $AMS_BASE/create_app.sh WebRTCApp $AMS_BASE
-check $?
+if [[ $1 == *"enterprise"* ]]; then
+  $SUDO sh $AMS_BASE/create_app.sh WebRTCAppEE $AMS_BASE
+  check $?
+  else
+  $SUDO sh $AMS_BASE/create_app.sh WebRTCApp $AMS_BASE
+  check $?
+fi
 
 $SUDO cp $AMS_BASE/antmedia /etc/init.d/
 check $?
