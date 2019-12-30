@@ -47,6 +47,7 @@ restore_settings() {
   fi
 }
 
+
 check() {
   OUT=$?
   if [ $OUT -ne 0 ]; then
@@ -70,20 +71,10 @@ if ! [ -x "$(command -v sudo)" ]; then
   SUDO=""
 fi
 
-$SUDO apt-get update -y
-check $?
-
-$SUDO apt-get install openjdk-8-jdk unzip jsvc -y
-check $?
-
-openjfxExists=`apt-cache search openjfx | wc -l`
-if [ "$openjfxExists" -gt "0" ];
-then
-  $SUDO apt-get install openjfx -y
-fi
+$SUDO yum -y install java-1.8.0-openjdk unzip apache-commons-daemon-jsvc
+check
 
 unzip $1
-check $?
 
 if ! [ -d $AMS_BASE ]; then
   $SUDO mv ant-media-server $AMS_BASE
@@ -95,17 +86,12 @@ else
   check $?
 fi
 
-$SUDO sed -i '/JAVA_HOME="\/usr\/lib\/jvm\/java-8-oracle"/c\JAVA_HOME="\/usr\/lib\/jvm\/java-8-openjdk-amd64"'  $AMS_BASE/antmedia
-check $?
+$SUDO sed -i '/JAVA_HOME="\/usr\/lib\/jvm\/java-8-oracle"/c\JAVA_HOME="\/usr\/lib\/jvm\/jre-openjdk"'  $AMS_BASE/antmedia
 
 $SUDO cp $AMS_BASE/antmedia /etc/init.d/
 check $?
 
-$SUDO update-rc.d antmedia defaults
-check $?
-
-$SUDO update-rc.d antmedia enable
-check $?
+$SUDO chkconfig antmedia on
 
 $SUDO mkdir $AMS_BASE/log
 check $?
@@ -120,7 +106,15 @@ check $?
 
 $SUDO service antmedia stop
 $SUDO service antmedia start
-OUT=$?
+
+ports=("5080","443","5443","1935","5554")
+
+for i in ${ports[*]}
+do
+  firewall-cmd --add-port=$i/tcp --permanent > /dev/null 2>&1
+done
+firewall-cmd --add-port=5000-65000/udp --permanent > /dev/null 2>&1
+firewall-cmd --reload > /dev/null 2>&1
 
 if [ $OUT -eq 0 ]; then
   if [ $SAVE_SETTINGS == "true" ]; then
