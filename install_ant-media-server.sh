@@ -20,7 +20,6 @@ restore_settings() {
         done
         if [ -d $BACKUP_DIR/webapps/$i/ ]; then
           cp -p -r $BACKUP_DIR/webapps/$i/WEB-INF/red5-web.properties $AMS_BASE/webapps/$i/WEB-INF/red5-web.properties
-          cp -p -r $BACKUP_DIR/webapps/$i/WEB-INF/*.xml $AMS_BASE/webapps/$i/WEB-INF/
           if [ -d $BACKUP_DIR/webapps/$i/streams/ ]; then
             cp -p -r $BACKUP_DIR/webapps/$i/streams/ $AMS_BASE/webapps/$i/
           fi
@@ -35,7 +34,6 @@ restore_settings() {
       unzip $AMS_BASE/StreamApp*.war -d $AMS_BASE/webapps/$custom_app
       sleep 2
       cp -p $BACKUP_DIR/webapps/$custom_app/WEB-INF/red5-web.properties $AMS_BASE/webapps/$custom_app/WEB-INF/red5-web.properties
-      cp -p $BACKUP_DIR/webapps/$custom_app/WEB-INF/*.xml $AMS_BASE/webapps/$custom_app/WEB-INF/
       if [ -d $BACKUP_DIR/webapps/$custom_app/streams/ ]; then
         cp -p -r $BACKUP_DIR/webapps/$custom_app/streams/ $AMS_BASE/webapps/$custom_app/
       fi
