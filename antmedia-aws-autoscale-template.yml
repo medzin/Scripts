@@ -17,7 +17,7 @@ Parameters:
   InstanceType:
     Description: Ant Media Server EC2 instance type
     Type: String
-    Default: t2.large
+    Default: c5.xlarge
     AllowedValues:
       - t2.large
       - t2.xlarge
@@ -58,7 +58,7 @@ Parameters:
   MongoDBInstanceType:
     Description: Ant Media MongoDB EC2 instance type
     Type: String
-    Default: t3.micro
+    Default: c5.xlarge
     AllowedValues:
       - a1.medium
       - a1.large
